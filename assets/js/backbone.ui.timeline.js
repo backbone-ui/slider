@@ -1,6 +1,6 @@
 // Backbone.js Timeline extension
 //
-// Created by: Lyndel Thomas (@tracend)
+// Created by: Lyndel Thomas (@ryndel)
 // Source: https://github.com/backbone-ui/timeline
 //
 // Licensed under the MIT license: 
