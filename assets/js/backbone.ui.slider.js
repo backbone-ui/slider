@@ -1,4 +1,4 @@
-// Backbone.js Timeline extension
+// Backbone.js Slider extension
 //
 // Created by: Lyndel Thomas (@ryndel)
 // Source: https://github.com/backbone-ui/timeline
@@ -11,36 +11,36 @@
 	// fallbacks
 	if( _.isUndefined( Backbone.UI ) ) Backbone.UI = {};
 	
-	Backbone.UI.Timeline = Backbone.View.extend({
+	Backbone.UI.Slider = Backbone.View.extend({
 		
 		initialize: function( options ){
 			var self = this;
 			this.data = ( options.data ) ? options.data : [];
 			// 
-			this.$timeline = $(this.el).find('input');
-			this.$timelineDate = $(this.el).find('.date');
+			this.$slider = $(this.el).find('input');
+			this.$sliderDate = $(this.el).find('.date');
 			this.dataCount = this.data.length;
-			this.timelineWidth = this.$timeline.width();
+			this.timelineWidth = this.$slider.width();
 			this.step =  this.timelineWidth / (this.dataCount-1);
 				
 			// set the  max and value in timeline
-			this.$timeline
+			this.$slider
 				.attr('value', 1)
 				.attr('max', this.dataCount);
 				
 			setTimeout(function(){
-				self.$timeline.trigger("change");
+				self.$slider.trigger("change");
 			}, 500);
 		},
 		
 		events: {
-			"change input" : "updateTimelineDate"
+			"change input" : "updateSliderDate"
 		},
 		
-		updateTimelineDate: function( e ) {
+		updateSliderDate: function( e ) {
 			var val = $(e.target).val();
-			this.$timelineDate.html(this.data[val-1]);
-			this.$timelineDate.css("left", (val-1) * this.step +"px" );
+			this.$sliderDate.html(this.data[val-1]);
+			this.$sliderDate.css("left", (val-1) * this.step +"px" );
 		}
 	});
 
