@@ -17,24 +17,30 @@
 
 	var Slider = View.extend({
 
+		options: {
+			count: 0
+		},
+
 		events: {
 			"input input" : "updateSliderLabel"
 		},
 
 		initialize: function( options ){
+			// fallbacks
+			options = options || {};
 			var self = this;
-			this.data = ( options.data ) ? options.data : [];
+			if( options.data ) this.data = options.data;
 			//
 			this.$slider = $(this.el).find('input');
 			this.$sliderLabel = $(this.el).find('.date');
-			this.dataCount = this.data.length;
+			this.options.count = (this.data instanceof Array) ? this.data.length : this._count( this.data.attributes ); // check if it's a simple array...
 			this.timelineWidth = this.$slider.width();
-			this.step =  this.timelineWidth / (this.dataCount-1);
+			this.step =  this.timelineWidth / (this.options.count-1);
 
 			// set the  max and value in timeline
 			this.$slider
 				.attr('value', 1)
-				.attr('max', this.dataCount);
+				.attr('max', this.options.count);
 
 			// trigger input once on init
 			setTimeout(function(){
@@ -44,8 +50,24 @@
 
 		updateSliderLabel: function( e ) {
 			var val = $(e.target).val();
-			this.$sliderLabel.html(this.data[val-1]);
+			var label = ( this.data.attributes ) ? this.data.get( val-1 ) : this.data[val-1];
+			this.$sliderLabel.html(label);
 			this.$sliderLabel.css("left", (val-1) * this.step +"px" );
+		},
+
+		// Helpers
+		// - counts the items in an array or an object
+		_count: function( data ) {
+			if (typeof data == "object") {
+				var count = 0;
+				for (var i in data) {
+					count++;
+				}
+				return count;
+			} else {
+				// assume it's an array?
+				return data.length;
+			}
 		}
 	});
 
