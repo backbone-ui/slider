@@ -18,7 +18,7 @@
 	var Slider = View.extend({
 
 		events: {
-			"input input" : "updateSliderDate"
+			"input input" : "updateSliderLabel"
 		},
 
 		initialize: function( options ){
@@ -26,7 +26,7 @@
 			this.data = ( options.data ) ? options.data : [];
 			//
 			this.$slider = $(this.el).find('input');
-			this.$sliderDate = $(this.el).find('.date');
+			this.$sliderLabel = $(this.el).find('.date');
 			this.dataCount = this.data.length;
 			this.timelineWidth = this.$slider.width();
 			this.step =  this.timelineWidth / (this.dataCount-1);
@@ -42,10 +42,10 @@
 			}, 500);
 		},
 
-		updateSliderDate: function( e ) {
+		updateSliderLabel: function( e ) {
 			var val = $(e.target).val();
-			this.$sliderDate.html(this.data[val-1]);
-			this.$sliderDate.css("left", (val-1) * this.step +"px" );
+			this.$sliderLabel.html(this.data[val-1]);
+			this.$sliderLabel.css("left", (val-1) * this.step +"px" );
 		}
 	});
 
