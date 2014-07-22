@@ -17,6 +17,10 @@
 
 	var Slider = View.extend({
 
+		events: {
+			"input input" : "updateSliderDate"
+		},
+
 		initialize: function( options ){
 			var self = this;
 			this.data = ( options.data ) ? options.data : [];
@@ -34,12 +38,8 @@
 
 			// trigger input once on init
 			setTimeout(function(){
-				self.$slider.trigger("change");
+				self.$slider.trigger("input");
 			}, 500);
-		},
-
-		events: {
-			"change input" : "updateSliderDate"
 		},
 
 		updateSliderDate: function( e ) {
