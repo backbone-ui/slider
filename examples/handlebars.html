@@ -1,0 +1,42 @@
+<!doctype html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Slider - Handlebars example</title>
+	<link rel='stylesheet' href="../assets/css/backbone.ui.slider.css">
+</head>
+
+<body>
+<div id="timeline"><!-- --></div>
+
+<!-- template -->
+<script id="template" type="text/template">
+	<label></label>
+	<input type="range" min="0" max="0">
+</script>
+
+<!-- deps -->
+<script type="text/javascript" src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/underscore.js/1.4.4/underscore-min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/backbone.js/1.0.0/backbone-min.js"></script>
+<script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/handlebars.js/2.0.0-alpha.4/handlebars.min.js"></script>
+<script type="text/javascript" src="//rawgit.com/makesites/backbone-app/master/build/backbone.app-min.js"></script>
+
+
+<!-- lib -->
+<script type="text/javascript" src="../assets/js/backbone.ui.slider.js"></script>
+
+<script type="text/javascript">
+
+var view = new APP.UI.Slider({
+	el : '#timeline',
+	max: 500,
+	step: 20,
+	html: $("#template").html()
+});
+view.render();
+</script>
+
+
+</body>
+</html>
