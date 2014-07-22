@@ -22,7 +22,8 @@
 		},
 
 		events: {
-			"input input" : "updateSliderLabel"
+			"input input" : "updateSliderLabel",
+			"change input" : "updateData"
 		},
 
 		initialize: function( options ){
@@ -53,6 +54,11 @@
 			var label = ( this.data.attributes ) ? this.data.get( val-1 ) : this.data[val-1];
 			this.$sliderLabel.html(label);
 			this.$sliderLabel.css("left", (val-1) * this.step +"px" );
+		},
+
+		updateData: function( e ) {
+			var val = $(e.target).val();
+			this.trigger("change", { value: val });
 		},
 
 		// Helpers
