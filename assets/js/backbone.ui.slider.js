@@ -18,7 +18,10 @@
 	var Slider = View.extend({
 
 		options: {
-			count: 0
+			count: 0,
+			min: 1,
+			max: 1,
+			step: 1
 		},
 
 		events: {
@@ -30,18 +33,22 @@
 			// fallbacks
 			options = options || {};
 			var self = this;
-			if( options.data ) this.data = options.data;
+			if( !_.isEmpty(options) ) this.options = _.extend({}, this.options, options);
+			this.data = this._getData();
 			//
 			this.$slider = $(this.el).find('input');
 			this.$sliderLabel = $(this.el).find('label');
 			this.options.count = (this.data instanceof Array) ? this.data.length : this._count( this.data.attributes ); // check if it's a simple array...
 			this.timelineWidth = this.$slider.width();
-			this.step =  this.timelineWidth / (this.options.count-1);
+			// update this on window resize
+			this.step = this.timelineWidth / this.options.count;
 
-			// set the  max and value in timeline
+			// set the max, step and value in timeline
 			this.$slider
-				.attr('value', 1)
-				.attr('max', this.options.count);
+				.attr('value', this.options.min)
+				.attr('min', this.options.min)
+				.attr('max', this.options.count * this.options.step)
+				.attr('step', this.options.step);
 
 			// trigger input once on init
 			setTimeout(function(){
@@ -50,14 +57,14 @@
 		},
 
 		updateSliderLabel: function( e ) {
-			var val = $(e.target).val();
-			var label = ( this.data.attributes ) ? this.data.get( val-1 ) : this.data[val-1];
+			var index = ( $(e.target).val() - this.options.min) / this.options.step; // normalized index
+			var label = ( this.data.attributes ) ? this.data.get( index ) : this.data[index];
 			this.$sliderLabel.html(label);
-			this.$sliderLabel.css("left", (val-1) * this.step +"px" );
+			this.$sliderLabel.css("left", (index) * this.step +"px" );
 		},
 
 		updateData: function( e ) {
-			var val = $(e.target).val();
+			var val = $(e.target).val(); // actual value
 			this.trigger("change", { value: val });
 		},
 
@@ -74,6 +81,22 @@
 				// assume it's an array?
 				return data.length;
 			}
+		},
+		// - look up data from options or create
+		_getData: function(){
+			if( this.options.data ){
+				// easy...
+				return this.options.data;
+			}
+			// otherwise "make up" data based on the options
+			var data = [];
+			var min = this.options.min;
+			var max = this.options.max;
+			var step = this.options.step;
+			for( var i = min; i <=max; i += step ){
+				data.push(i);
+			}
+			return new Backbone.Model( data );
 		}
 	});
 
