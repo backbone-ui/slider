@@ -33,7 +33,7 @@
 			if( options.data ) this.data = options.data;
 			//
 			this.$slider = $(this.el).find('input');
-			this.$sliderLabel = $(this.el).find('.date');
+			this.$sliderLabel = $(this.el).find('label');
 			this.options.count = (this.data instanceof Array) ? this.data.length : this._count( this.data.attributes ); // check if it's a simple array...
 			this.timelineWidth = this.$slider.width();
 			this.step =  this.timelineWidth / (this.options.count-1);
