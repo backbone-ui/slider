@@ -19,8 +19,8 @@
 
 		options: {
 			count: 0,
-			min: 1,
-			max: 1,
+			min: 0,
+			max: 0,
 			step: 1
 		},
 
@@ -36,6 +36,7 @@
 			this.data = this._getData();
 			// set options
 			this.options.count = (this.data instanceof Array) ? this.data.length : this._count( this.data.attributes ); // check if it's a simple array...
+			this.options.max = this.options.count || (this.options.count * this.option.step) + this.option.min
 
 			// render straight away if init ends here
 			if( !isAPP ) this.render();
@@ -55,13 +56,13 @@
 			this.$sliderLabel = $(this.el).find('label');
 			this.timelineWidth = this.$slider.width();
 			// update this on window resize
-			this.step = this.timelineWidth / this.options.count;
+			this.step = this.timelineWidth / (this.options.count-1);
 
 			// set the max, step and value in timeline
 			this.$slider
 				.attr('value', this.options.min)
 				.attr('min', this.options.min)
-				.attr('max', this.options.count * this.options.step)
+				.attr('max', (this.options.count-1) * this.options.step )
 				.attr('step', this.options.step);
 
 			// trigger input once on render
@@ -108,9 +109,11 @@
 			var min = this.options.min;
 			var max = this.options.max;
 			var step = this.options.step;
-			for( var i = min; i <=max; i += step ){
+			for( var i = min; i < max; i += step ){
 				data.push(i);
 			}
+			// at the end push the max value
+			data.push(max);
 			return new Backbone.Model( data );
 		}
 	});
