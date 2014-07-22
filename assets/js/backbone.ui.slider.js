@@ -32,13 +32,25 @@
 		initialize: function( options ){
 			// fallbacks
 			options = options || {};
-			var self = this;
 			if( !_.isEmpty(options) ) this.options = _.extend({}, this.options, options);
 			this.data = this._getData();
-			//
+			// set options
+			this.options.count = (this.data instanceof Array) ? this.data.length : this._count( this.data.attributes ); // check if it's a simple array...
+
+			// render straight away if init ends here
+			if( !isAPP ) this.render();
+
+			return View.prototype.initialize.call( this, options );
+		},
+
+		render: (isAPP) ? View.prototype.render : function(){
+
+			this.postRender();
+		},
+
+		postRender: function(){
 			this.$slider = $(this.el).find('input');
 			this.$sliderLabel = $(this.el).find('label');
-			this.options.count = (this.data instanceof Array) ? this.data.length : this._count( this.data.attributes ); // check if it's a simple array...
 			this.timelineWidth = this.$slider.width();
 			// update this on window resize
 			this.step = this.timelineWidth / this.options.count;
@@ -50,7 +62,8 @@
 				.attr('max', this.options.count * this.options.step)
 				.attr('step', this.options.step);
 
-			// trigger input once on init
+			// trigger input once on render
+			var self = this;
 			setTimeout(function(){
 				self.$slider.trigger("input");
 			}, 500);
@@ -59,6 +72,7 @@
 		updateSliderLabel: function( e ) {
 			var index = ( $(e.target).val() - this.options.min) / this.options.step; // normalized index
 			var label = ( this.data.attributes ) ? this.data.get( index ) : this.data[index];
+			console.log(label);
 			this.$sliderLabel.html(label);
 			this.$sliderLabel.css("left", (index) * this.step +"px" );
 		},
