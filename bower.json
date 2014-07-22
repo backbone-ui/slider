@@ -1,6 +1,6 @@
 {
 	"name": "backbone.ui.slider",
-	"version": "0.2.0",
+	"version": "0.3.0",
 	"main": ["./assets/js/backbone.ui.slider.js"],
 	"dependencies": {
 		"backbone" : "0.9.10",
