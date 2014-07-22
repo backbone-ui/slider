@@ -49,6 +49,8 @@
 		},
 
 		postRender: function(){
+			$(this.el).addClass("ui-slider");
+			//
 			this.$slider = $(this.el).find('input');
 			this.$sliderLabel = $(this.el).find('label');
 			this.timelineWidth = this.$slider.width();
@@ -72,7 +74,6 @@
 		updateSliderLabel: function( e ) {
 			var index = ( $(e.target).val() - this.options.min) / this.options.step; // normalized index
 			var label = ( this.data.attributes ) ? this.data.get( index ) : this.data[index];
-			console.log(label);
 			this.$sliderLabel.html(label);
 			this.$sliderLabel.css("left", (index) * this.step +"px" );
 		},
