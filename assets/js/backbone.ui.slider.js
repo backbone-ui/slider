@@ -17,6 +17,8 @@
 
 	var Slider = View.extend({
 
+		el : '.ui-slider',
+
 		options: {
 			count: 0,
 			min: 0,
