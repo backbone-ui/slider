@@ -20,7 +20,7 @@
 		el : '.ui-slider',
 
 		options: {
-			count: 0,
+			count: 1,
 			min: 0,
 			max: 0,
 			step: 1
@@ -35,10 +35,12 @@
 			// fallbacks
 			options = options || {};
 			if( !_.isEmpty(options) ) this.options = _.extend({}, this.options, options);
+			// fallback(s)
+			this.options.max = this.options.max || ((this.options.count-1) * this.option.step) + this.option.min;
+			// get data
 			this.data = this._getData();
 			// set options
 			this.options.count = (this.data instanceof Array) ? this.data.length : this._count( this.data.attributes ); // check if it's a simple array...
-			this.options.max = this.options.count || (this.options.count * this.option.step) + this.option.min
 
 			// render straight away if init ends here
 			if( !isAPP ) this.render();
@@ -64,7 +66,7 @@
 			this.$slider
 				.attr('value', this.options.min)
 				.attr('min', this.options.min)
-				.attr('max', (this.options.count-1) * this.options.step )
+				.attr('max', this.options.max )
 				.attr('step', this.options.step);
 
 			// trigger input once on render
@@ -108,9 +110,9 @@
 			}
 			// otherwise "make up" data based on the options
 			var data = [];
-			var min = this.options.min;
-			var max = this.options.max;
-			var step = this.options.step;
+			var min = parseInt( this.options.min );
+			var max = parseInt( this.options.max );
+			var step = parseInt( this.options.step );
 			for( var i = min; i < max; i += step ){
 				data.push(i);
 			}
