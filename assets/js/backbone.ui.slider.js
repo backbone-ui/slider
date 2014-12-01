@@ -36,7 +36,7 @@
 			options = options || {};
 			if( !_.isEmpty(options) ) this.options = _.extend({}, this.options, options);
 			// fallback(s)
-			this.options.max = this.options.max || ((this.options.count-1) * this.option.step) + this.option.min;
+			this.options.max = this.options.max || (( parseInt(this.options.count)-1) * parseInt(this.options.step) ) + parseInt(this.options.min);
 			// get data
 			this.data = this._getData();
 			// set options
