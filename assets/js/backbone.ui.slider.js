@@ -8,7 +8,23 @@
  * Released under the [MIT license](http://makesites.org/licenses/MIT)
  */
 
-(function(window, $, _, Backbone, APP) {
+(function (lib) {
+
+	//"use strict";
+
+	// Support module loaders
+	if (typeof define === 'function' && define.amd) {
+		// AMD. Register as an anonymous module.
+		define(['jquery', 'underscore', 'backbone'], lib);
+	} else if ( typeof module === "object" && module && typeof module.exports === "object" ){
+		// Expose as module.exports in loaders that implement CommonJS module pattern.
+		module.exports = lib;
+	} else {
+		// Browser globals
+		lib(window.jQuery, window._, window.Backbone);
+	}
+
+}(function($, _, Backbone) {
 
 	// support for Backbone APP() view if available...
 	var isAPP = ( typeof APP !== "undefined" && typeof APP.View !== "undefined" );
@@ -123,16 +139,10 @@
 	});
 
 
-	// Support module loaders
-	if ( typeof module === "object" && module && typeof module.exports === "object" ) {
-		// Expose as module.exports in loaders that implement CommonJS module pattern.
-		module.exports = Slider;
-	} else {
-		// Register as a named AMD module, used in Require.js
-		if ( typeof define === "function" && define.amd ) {
-			//define("backbone.ui.slider", ['jquery''underscore', 'backbone'], function(){ return Slider; });
-		}
-	}
+	// update Backbone namespace regardless
+	Backbone.UI = Backbone.UI || {};
+	Backbone.UI.Slider = Slider;
+
 	// If there is a window object, that at least has a document property
 	if ( typeof window === "object" && typeof window.document === "object" ) {
 		// update APP namespace
@@ -142,12 +152,11 @@
 			// save namespace
 			window.APP = APP;
 		}
-		// update Backbone namespace regardless
-		Backbone.UI = Backbone.UI || {};
-		Backbone.UI.Slider = Slider;
 		window.Backbone = Backbone;
 	}
 
 
+	// for module loaders:
+	return Slider;
 
-})(this.window, this.$, this._, this.Backbone, this.APP);
+}));
